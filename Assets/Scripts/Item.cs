@@ -25,6 +25,7 @@ public class Item : MonoBehaviour
             Destroy(gameObject, _audioClip.length);
 
             PuzzleTimer.instance.finished = true;
+            InteractionManager.SetMainItemFound();
         }
     }
 }

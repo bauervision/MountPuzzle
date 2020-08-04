@@ -2844,8 +2844,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openCloseEvents: 0
-  openCloseWindow: 0
-  selectedToolbar: 0
+  openCloseWindow: 1
+  selectedToolbar: 1
   _isDead: 0
   _currentHealth: 0
   isImmortal: 0
@@ -2931,8 +2931,8 @@ MonoBehaviour:
     walkByDefault: 0
     rotateWithCamera: 0
     walkSpeed: 2
-    runningSpeed: 4
-    sprintSpeed: 6
+    runningSpeed: 8
+    sprintSpeed: 12
     crouchSpeed: 2
   strafeSpeed:
     movementSmooth: 6
