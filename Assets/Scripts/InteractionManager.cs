@@ -21,6 +21,9 @@ public class InteractionManager : MonoBehaviour
     public Image bonusItem2Sprite;
     public Sprite foundSprite;
 
+    public Text GemText;
+    public Text CoinText;
+
     private string[] goodieBag = new[] { "Goggles", "Halo", "Radar", "Bad Knees", "Stamina", "Poisoned" };
     private string[] goodieBagDescription = new[] {
         "Goggles!\nYou have gained the ability to see the special item spawn bubbles! This can speed up your location time greatly because you now know where the item is NOT!",
@@ -29,6 +32,10 @@ public class InteractionManager : MonoBehaviour
         "Bad Knees!\nOuch, you've injured your knees which means no jumping for you today!",
         "Stamina Meter installed!\nNot quite as young as you were, today you will have to deal with a lack of stamina, which means you can only sprint for so long before you will need to catch your breath.",
         "Poisoned!\nMovement speed has been reduced to half as you struggle to move around at all." };
+
+    private int levelCoinCount = 0;
+    private int levelGemCount = 0;
+    private int levelTotalPoints = 0;
 
 
     public void GrabGoodieBag()
@@ -63,8 +70,31 @@ public class InteractionManager : MonoBehaviour
         Instantiate(spawnItem, spawnLocations[spawnPoint].transform.position, Quaternion.identity);
     }
 
-    public static void SetMainItemFound()
+    public static void SetItemFound(int itemFound)
     {
-        instance.mainItemSprite.sprite = instance.foundSprite;
+        print("Collected Item: " + itemFound);
+        switch (itemFound)
+        {
+            // main level items
+            case 0: { instance.mainItemSprite.sprite = instance.foundSprite; break; }
+            case 1: { instance.bonusItem1Sprite.sprite = instance.foundSprite; break; }
+            case 2: { instance.bonusItem2Sprite.sprite = instance.foundSprite; break; }
+            // collectibles
+            case 3: { instance.levelCoinCount++; break; }
+            case 4: { instance.levelGemCount++; break; }
+            case 5: { break; }
+            case 6: { break; }
+            case 7: { break; }
+            // coin
+            default: { break; }
+        }
+
     }
+
+    private void Update()
+    {
+        GemText.text = instance.levelGemCount.ToString();
+        CoinText.text = instance.levelCoinCount.ToString();
+    }
+
 }
