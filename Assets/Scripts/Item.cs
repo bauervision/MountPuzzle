@@ -36,8 +36,6 @@ public class Item : MonoBehaviour
             _audioSource.PlayOneShot(_audioClip);
             Destroy(gameObject, _audioClip.length);
 
-            //stop timer
-            PuzzleTimer.instance.finished = true;
             // trigger item collected
             InteractionManager.SetItemFound((int)myType);
         }

@@ -9,26 +9,37 @@ public class PuzzleTimer : MonoBehaviour
     public Text timerText;
     private float startTime;
     public bool finished = false;
+    private int timeMinutes;
+    private int timeSeconds;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+    }
 
-        startTime = Time.time;
+    public static void StartTimer()
+    {
+        instance.finished = false;
+        instance.startTime = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (finished) return;
+        if (finished)
+        {
+            InteractionManager.finalMinutes = timeMinutes;
+            InteractionManager.finalSeconds = timeSeconds;
+            return;
+        }
 
         float t = Time.time - startTime;
-        string minutes = ((int)t / 60).ToString();
-        string seconds = (t % 60).ToString("f0");
+        timeMinutes = ((int)t / 60);
+        timeSeconds = (int)(t % 60);
 
-        timerText.text = minutes + ":" + seconds;
+        timerText.text = timeMinutes.ToString() + ":" + timeSeconds.ToString("f0");
     }
 
 }

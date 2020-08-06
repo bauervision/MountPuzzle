@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IsleOfNoob.unity
     guid: 4ac595a403876634a9a694804ca38fd7
+  - enabled: 1
+    path: Assets/Scenes/MountEgo.unity
+    guid: b56c004971416674aabcca09eea35241
   m_configObjects: {}
