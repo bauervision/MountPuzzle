@@ -70,6 +70,7 @@ public class InteractionManager : MonoBehaviour
     private int levelCoinCount = 0;
     private int levelGemCount = 0;
     private int levelTotalPoints = 0;
+    private int chosenDropzoneIndex = -1;
 
 
 
@@ -85,29 +86,67 @@ public class InteractionManager : MonoBehaviour
         finalSeconds = 0;
     }
 
+    private void InitializeGoodieBagAbilities()
+    {
+        GoodieBagStamina.SetActive(false);
+        // hide all the dropzones
+        foreach (GameObject dropzone in spawnLocations)
+        {
+            // hide the mesh
+            dropzone.GetComponent<MeshRenderer>().enabled = false;
+            // hide the halo
+            dropzone.GetComponentInChildren<Light>().enabled = false;
+        }
+    }
+
     public void GrabGoodieBag()
     {
         GoodieBag.SetActive(false);
 
-        int grabItem = Random.Range(0, goodieBag.Length);
+        chosenDropzoneIndex = Random.Range(0, goodieBag.Length);
 
-        GoodieBagText.text = goodieBagDescription[grabItem];
-        levelDeductionText = goodieBag[grabItem];
-        levelDeduction = goodieBagDeductions[grabItem];
+        GoodieBagText.text = goodieBagDescription[chosenDropzoneIndex];
+        levelDeductionText = goodieBag[chosenDropzoneIndex];
+        levelDeduction = goodieBagDeductions[chosenDropzoneIndex];
 
         // set the game UI
-        GoodieBagUIText.text = goodieBag[grabItem];
+        GoodieBagUIText.text = goodieBag[chosenDropzoneIndex];
+        // turn off all abilities first
 
-        GoodieBagStamina.SetActive(false);
-        // handle specific cases
-        switch (grabItem)
+
+        // now turn on only what we plled from the bag
+        switch (chosenDropzoneIndex)
         {
-            case 0: { break; }// goggles
-            case 1: { break; }// halo
-            case 2: { break; }//radar
-            case 3: { break; }//bad knees
-            case 4: { GoodieBagStamina.SetActive(true); break; }//stamina
-            case 5: { break; }//poison
+            case 1: // goggles = show all ghost dropzones
+                {
+                    foreach (GameObject dropzone in spawnLocations)
+                    {
+                        dropzone.GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    break;
+                }
+            case 2: // halo
+                {
+                    foreach (GameObject dropzone in spawnLocations)
+                    {
+                        dropzone.GetComponentInChildren<Light>().enabled = true;
+                    }
+                    break;
+                }
+            case 3: //radar
+                {
+                    print("Radar" + chosenDropzoneIndex);
+                    if (chosenDropzoneIndex != -1)
+                    {
+                        spawnLocations[chosenDropzoneIndex].GetComponentInChildren<Light>().enabled = true;
+                    }
+
+                    break;
+                }
+            case 4: { break; }//bad knees
+            case 5: { GoodieBagStamina.SetActive(true); break; }//stamina
+            case 6: { break; }//poison
+            default: { break; } // bag o nothing
         }
 
     }
@@ -144,14 +183,14 @@ public class InteractionManager : MonoBehaviour
         instance = this;
         SpawnItem();
         GoodieBagText.text = "";
+        InitializeGoodieBagAbilities();
     }
 
     private void SpawnItem()
     {
         int spawnPoint = Random.Range(0, spawnLocations.Length);
         Instantiate(spawnItem, spawnLocations[spawnPoint].transform.position, Quaternion.identity);
-        //hide the model for where we spawn so we dont see the ghost
-        spawnLocations[spawnPoint].transform.gameObject.SetActive(false);
+
     }
 
     public static void SetItemFound(int itemFound)
@@ -169,7 +208,7 @@ public class InteractionManager : MonoBehaviour
             case 5: { break; }
             case 6: { break; }
             case 7: { break; }
-            // coin
+
             default: { break; }
         }
 
