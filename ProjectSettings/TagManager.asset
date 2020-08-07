@@ -36,6 +36,8 @@ TagManager:
   - PW - Nature
   - Synty Medium Farm
   - Synty Small Farm
+  - DropZone
+  - InteractionManager
   layers:
   - Default
   - TransparentFX

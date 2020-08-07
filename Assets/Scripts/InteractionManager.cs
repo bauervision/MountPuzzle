@@ -4,49 +4,52 @@ using UnityEngine.UI;
 
 public class InteractionManager : MonoBehaviour
 {
-
     public static InteractionManager instance;
-    public GameObject[] spawnLocations;
+    public enum CurrentLevel { IsleOfNoob, MountEgo, FrigidForest, Level4, Level5, Level6, Level7, Level8, Level9 };
+    public CurrentLevel thisLevel;
+
     public GameObject spawnItem;
-    public GameObject GoodieBag;
-    public Text GoodieBagText;
 
-    public Text GoodieBagUIText;
-    public GameObject GoodieBagStamina;
+    #region FindTheseItemsDuringAwake
+    private GameObject[] spawnLocations;
+    private GameObject GoodieBag;
+    private Text GoodieBagText;
+    private Text GoodieBagUIText;
+    private GameObject GoodieBagStamina;
+    private GameObject initialCanvas;
+    private GameObject gameCanvas;
+    private GameObject levelCanvas;
+    private GameObject finalCanvas;
+    private Image mainItemSprite;
+    private Image bonusItem1Sprite;
+    private Image bonusItem2Sprite;
+    private Text GemText;
+    private Text CoinText;
+    private Text finalTimeText;
+    private Text finalCoinText;
+    private Text finalGemText;
+    private Text finalDeductionText;
+    private Text tallyTimeText;
+    private Text tallyCollectibleText;
+    private Text tallyItemText;
+    private Text tallyDeductionText;
+    private Text finalScoreText;
+    private Button LoadLevelButton;
+    private Button LevelSelectButtonInitial;
+    private Button LevelSelectButtonFinal;
+    private Button LoadNextLevelButton;
+
+    private Camera gameCamera;
+    private Camera uiCamera;
+    private GameObject gameController;
+    #endregion
 
 
-    // canvases
-    public GameObject initialCanvas;
-    public GameObject gameCanvas;
-    public GameObject levelCanvas;
-    public GameObject finalCanvas;
-
-    // cameras
-    public Camera gameCamera;
-    public Camera uiCamera;
-    public GameObject gameController;
 
 
-    public Image mainItemSprite;
-    public Image bonusItem1Sprite;
-    public Image bonusItem2Sprite;
+
     public Sprite foundSprite;
 
-    public Text GemText;
-    public Text CoinText;
-
-    public Text finalTimeText;
-
-    public Text finalCoinText;
-    public Text finalGemText;
-    public Text finalDeductionText;
-    public Text tallyTimeText;
-    public Text tallyCollectibleText;
-    public Text tallyItemText;
-    public Text tallyDeductionText;
-
-
-    public Text finalScoreText;
 
     public static int finalMinutes = 0;
     public static int finalSeconds = 0;
@@ -72,6 +75,59 @@ public class InteractionManager : MonoBehaviour
     private int levelTotalPoints = 0;
     private int chosenDropzoneIndex = -1;
 
+    private void Awake()
+    {
+        // garb all cameras
+        gameCamera = GameObject.Find("vThirdPersonCamera").GetComponent<Camera>();
+        uiCamera = GameObject.Find("UICamera").GetComponent<Camera>();
+
+        // invector game controller
+        gameController = GameObject.Find("vGameController");
+
+        // grab all dropzones in the scene
+        spawnLocations = GameObject.FindGameObjectsWithTag("DropZone");
+        // grab and assign listeners to all buttons
+        GoodieBag = GameObject.Find("GoodieBag");
+        GoodieBag.GetComponent<Button>().onClick.AddListener(GrabGoodieBag);
+        LoadLevelButton = GameObject.Find("LoadLevelButton").GetComponent<Button>();
+        LoadLevelButton.GetComponent<Button>().onClick.AddListener(PlayLevel);
+        LevelSelectButtonInitial = GameObject.Find("LevelSelectButtonInitial").GetComponent<Button>();
+        LevelSelectButtonInitial.GetComponent<Button>().onClick.AddListener(ShowLevelSelect);
+        LevelSelectButtonFinal = GameObject.Find("LevelSelectButtonFinal").GetComponent<Button>();
+        LevelSelectButtonFinal.GetComponent<Button>().onClick.AddListener(ShowLevelSelect);
+        LoadNextLevelButton = GameObject.Find("LoadNextLevelButton").GetComponent<Button>();
+        LoadNextLevelButton.GetComponent<Button>().onClick.AddListener(LoadNextLevel);
+        // assign all item images
+        mainItemSprite = GameObject.Find("MainItemSprite").GetComponent<Image>();
+        bonusItem1Sprite = GameObject.Find("BonusItem1Sprite").GetComponent<Image>();
+        bonusItem2Sprite = GameObject.Find("BonusItem2Sprite").GetComponent<Image>();
+
+        // assign all Text objects
+        GoodieBagText = GameObject.Find("GoodieBagText").GetComponent<Text>();
+        GoodieBagUIText = GameObject.Find("GoodieBagText").GetComponent<Text>();
+        GoodieBagStamina = GameObject.Find("GoodieBagStamina");
+        initialCanvas = GameObject.Find("InitialCanvas");
+        gameCanvas = GameObject.Find("GameCanvas");
+        levelCanvas = GameObject.Find("LevelCanvas");
+        finalCanvas = GameObject.Find("FinalCanvas");
+        GemText = GameObject.Find("GemTextUI").GetComponent<Text>();
+        CoinText = GameObject.Find("CoinTextUI").GetComponent<Text>();
+        finalTimeText = GameObject.Find("FinalTimeText").GetComponent<Text>();
+        finalCoinText = GameObject.Find("FinalCoinText").GetComponent<Text>();
+        finalGemText = GameObject.Find("FinalGemText").GetComponent<Text>();
+        finalDeductionText = GameObject.Find("FinalCoinText").GetComponent<Text>();
+        tallyTimeText = GameObject.Find("TallyTimeText").GetComponent<Text>();
+        tallyCollectibleText = GameObject.Find("TallyCollectibleText").GetComponent<Text>();
+        tallyItemText = GameObject.Find("TallyItemText").GetComponent<Text>();
+        tallyDeductionText = GameObject.Find("TallyDeductionText").GetComponent<Text>();
+        finalScoreText = GameObject.Find("FinalScoreText").GetComponent<Text>();
+
+        // now handle game level name update
+        GameObject.Find("LevelTitleInitial").GetComponent<Text>().text = thisLevel.ToString();
+        GameObject.Find("LevelTitleFinal").GetComponent<Text>().text = thisLevel.ToString();
+
+
+    }
 
 
     private void InitializeAllVariables()
@@ -151,6 +207,10 @@ public class InteractionManager : MonoBehaviour
 
     }
 
+    private void LoadNextLevel()
+    {
+        LevelLoader.instance.PlayNextLevel(((int)thisLevel + 1));
+    }
     public void PlayLevel()
     {
         initialCanvas.SetActive(false);
@@ -176,6 +236,8 @@ public class InteractionManager : MonoBehaviour
 
     private void Start()
     {
+
+        //DontDestroyOnLoad(this.gameObject);
         gameCamera.transform.gameObject.SetActive(false);
         gameCanvas.SetActive(false);
         finalCanvas.SetActive(false);

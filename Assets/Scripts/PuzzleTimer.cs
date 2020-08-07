@@ -6,13 +6,16 @@ using UnityEngine.UI;
 public class PuzzleTimer : MonoBehaviour
 {
     public static PuzzleTimer instance;
-    public Text timerText;
+    private Text timerText;
     private float startTime;
     public bool finished = false;
     private int timeMinutes;
     private int timeSeconds;
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        timerText = GameObject.Find("TimerText").GetComponent<Text>();
+    }
     void Start()
     {
         instance = this;
