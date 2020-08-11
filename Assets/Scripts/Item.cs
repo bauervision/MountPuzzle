@@ -8,7 +8,7 @@ public class Item : MonoBehaviour
     public AudioClip _audioClip;
     public GameObject _particle;
 
-    public enum ItemType { Main, Bonus1, Bonus2, Coin, Gem, Glass, Wood, Metal };
+    public enum ItemType { Main, Bonus1, Bonus2, Coin, Gem, Paddle, Chest, Crystal };
 
     public ItemType myType;
 
