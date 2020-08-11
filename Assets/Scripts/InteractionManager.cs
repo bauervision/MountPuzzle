@@ -10,6 +10,7 @@ public class InteractionManager : MonoBehaviour
 
     public GameObject spawnItem;
 
+
     #region FindTheseItemsDuringAwake
     private GameObject[] spawnLocations;
     private GameObject GoodieBag;
@@ -42,11 +43,11 @@ public class InteractionManager : MonoBehaviour
     private Camera gameCamera;
     private Camera uiCamera;
     private GameObject gameController;
+    private GameObject notifyPanel;
+    private Text notifyText;
+    private Text levelDescriptionText;
+
     #endregion
-
-
-
-
 
     public Sprite foundSprite;
 
@@ -75,14 +76,20 @@ public class InteractionManager : MonoBehaviour
     private int levelTotalPoints = 0;
     private int chosenDropzoneIndex = -1;
 
+    private Color OffColor = new Color(0, 0, 0, 0);
+    private Color OnColor = new Color(0, 0, 0, 0.7f);
+
+
     private void Awake()
     {
         // garb all cameras
         gameCamera = GameObject.Find("vThirdPersonCamera").GetComponent<Camera>();
         uiCamera = GameObject.Find("UICamera").GetComponent<Camera>();
 
-        // invector game controller
+        // gameobjects
         gameController = GameObject.Find("vGameController");
+        notifyPanel = GameObject.Find("NotifyPanel");
+
 
         // grab all dropzones in the scene
         spawnLocations = GameObject.FindGameObjectsWithTag("DropZone");
@@ -121,15 +128,64 @@ public class InteractionManager : MonoBehaviour
         tallyItemText = GameObject.Find("TallyItemText").GetComponent<Text>();
         tallyDeductionText = GameObject.Find("TallyDeductionText").GetComponent<Text>();
         finalScoreText = GameObject.Find("FinalScoreText").GetComponent<Text>();
+        notifyText = GameObject.Find("NotifyText").GetComponent<Text>();
+        levelDescriptionText = GameObject.Find("LevelDescription").GetComponent<Text>();
 
         // now handle game level name update
         GameObject.Find("LevelTitleInitial").GetComponent<Text>().text = thisLevel.ToString();
         GameObject.Find("LevelTitleFinal").GetComponent<Text>().text = thisLevel.ToString();
 
-
     }
 
 
+    private void HandleLevelDescriptionUpdate()
+    {
+        print("handle update");
+        // handle level descriptions
+        switch ((int)thisLevel)
+        {
+            case 1:
+                {
+                    levelDescriptionText.text = "Let's warm up with a nice easy island."; break;
+                }
+            case 2:
+                {
+                    levelDescriptionText.text = "Time to crank it up a little and make you work for these items!"; break;
+                }
+            case 3:
+                {
+                    levelDescriptionText.text = "You're doing great, but now let's introduce you to your first puzzle."; break;
+                }
+            case 4:
+                {
+                    levelDescriptionText.text = "Level 4 description"; break;
+                }
+            case 5:
+                {
+                    levelDescriptionText.text = "Level 5 description"; break;
+                }
+            case 6:
+                {
+                    levelDescriptionText.text = "Level 6 description"; break;
+                }
+            case 7:
+                {
+                    levelDescriptionText.text = "Level 7 description"; break;
+                }
+            case 8:
+                {
+                    levelDescriptionText.text = "Level 8 description"; break;
+                }
+            case 9:
+                {
+                    levelDescriptionText.text = "Level 9 description"; break;
+                }
+            default:// final level
+                {
+                    levelDescriptionText.text = "Level 10 description"; break;
+                }
+        }
+    }
     private void InitializeAllVariables()
     {
         levelDeductionText = "None";
@@ -159,19 +215,19 @@ public class InteractionManager : MonoBehaviour
     {
         GoodieBag.SetActive(false);
 
-        chosenDropzoneIndex = Random.Range(0, goodieBag.Length);
+        int goodieBagChoice = Random.Range(0, goodieBag.Length);
 
-        GoodieBagText.text = goodieBagDescription[chosenDropzoneIndex];
-        levelDeductionText = goodieBag[chosenDropzoneIndex];
-        levelDeduction = goodieBagDeductions[chosenDropzoneIndex];
+        GoodieBagText.text = goodieBagDescription[goodieBagChoice];
+        levelDeductionText = goodieBag[goodieBagChoice];
+        levelDeduction = goodieBagDeductions[goodieBagChoice];
 
         // set the game UI
-        GoodieBagUIText.text = goodieBag[chosenDropzoneIndex];
+        GoodieBagUIText.text = goodieBagDescription[goodieBagChoice];
         // turn off all abilities first
 
 
-        // now turn on only what we plled from the bag
-        switch (chosenDropzoneIndex)
+        // now turn on only what we pulled from the bag
+        switch (goodieBagChoice)
         {
             case 1: // goggles = show all ghost dropzones
                 {
@@ -246,13 +302,16 @@ public class InteractionManager : MonoBehaviour
         SpawnItem();
         GoodieBagText.text = "";
         InitializeGoodieBagAbilities();
+
+        SetWarningHidden();
+
+        HandleLevelDescriptionUpdate();
     }
 
     private void SpawnItem()
     {
-        int spawnPoint = Random.Range(0, spawnLocations.Length);
-        Instantiate(spawnItem, spawnLocations[spawnPoint].transform.position, Quaternion.identity);
-
+        chosenDropzoneIndex = Random.Range(0, spawnLocations.Length);
+        Instantiate(spawnItem, spawnLocations[chosenDropzoneIndex].transform.position, Quaternion.identity);
     }
 
     public static void SetItemFound(int itemFound)
@@ -275,6 +334,31 @@ public class InteractionManager : MonoBehaviour
         }
 
     }
+
+    public static void TriggerWarning()
+    {
+        instance.SetWarning();
+    }
+
+    public static void HideWarning()
+    {
+        instance.SetWarningHidden();
+    }
+
+    private void SetWarning()
+    {
+        notifyPanel.GetComponent<Image>().color = OnColor;
+        notifyText.text = "You've found the Mountain Blood!\nBe sure you are ready to end the level before you grab it!\nDid you find everything you wanted to find in this level?";
+
+    }
+
+    private void SetWarningHidden()
+    {
+        notifyPanel.GetComponent<Image>().color = OffColor;
+        notifyText.text = "";
+
+    }
+
 
     public static void LevelCompleted()
     {

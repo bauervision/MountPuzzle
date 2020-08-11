@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1831496186}
-  m_IndirectSpecularColor: {r: 0.5702971, g: 0.68387336, b: 0.8147556, a: 1}
+  m_IndirectSpecularColor: {r: 0.56517184, g: 0.68171793, b: 0.8182228, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: dd927c384822dc24ea75567682993308,
+  m_LightingDataAsset: {fileID: 112000000, guid: ee5bdf095b8c714438a0ec1ddc8a68ca,
     type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -48294,6 +48294,16 @@ PrefabInstance:
     - target: {fileID: 4190202483397920436, guid: 0a5eb35ac0f984249a075b2bba06ce0f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4190202483397920438, guid: 0a5eb35ac0f984249a075b2bba06ce0f,
+        type: 3}
+      propertyPath: availableLevels.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4190202483397920438, guid: 0a5eb35ac0f984249a075b2bba06ce0f,
+        type: 3}
+      propertyPath: availableLevels.Array.data[2]
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4190202483397920442, guid: 0a5eb35ac0f984249a075b2bba06ce0f,
