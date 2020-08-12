@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3425791848114932957}
   - component: {fileID: 3425791848114932958}
   m_Layer: 5
-  m_Name: Star
+  m_Name: FinalBonusStar1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1336,7 +1336,7 @@ GameObject:
   - component: {fileID: 3425791849110526284}
   - component: {fileID: 3425791849110526285}
   m_Layer: 5
-  m_Name: LevelName
+  m_Name: NextLevelName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1414,7 +1414,7 @@ GameObject:
   - component: {fileID: 3425791849157710514}
   - component: {fileID: 3425791849157710515}
   m_Layer: 5
-  m_Name: Star (2)
+  m_Name: FinalBonusStar2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

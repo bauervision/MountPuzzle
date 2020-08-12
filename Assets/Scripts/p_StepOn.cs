@@ -9,9 +9,6 @@ public class p_StepOn : MonoBehaviour
 
     public GameObject affectedObject;
 
-    public bool isRotating = false;
-    public bool isMoving = false;
-
     private bool isOn = false;
     void OnTriggerEnter(Collider other)
     {

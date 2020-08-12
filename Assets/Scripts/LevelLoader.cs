@@ -16,7 +16,7 @@ public class LevelLoader : MonoBehaviour
     public Button Level_9;
 
     public int CurrentLevelIndex;
-    private string[] levelNames = new string[] { "Isle of Noob", "Mount Ego", "Frigid Forest", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8", "Level 9" };
+    public string[] levelNames = new string[] { "Isle of Noob", "Mount Ego", "Frigid Forest", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8", "Level 9" };
     private string[] levelSceneNames = new string[] { "IsleOfNoob", "MountEgo", "FrigidForest", "Level4", "Level5", "Level6", "Level7", "Level8", "Level9" };
     public bool[] availableLevels = new bool[] { true, false, false, false, false, false, false, false, false };
 

@@ -9,8 +9,8 @@ public class PuzzleTimer : MonoBehaviour
     private Text timerText;
     private float startTime;
     public bool finished = false;
-    private int timeMinutes;
-    private int timeSeconds;
+    public int timeMinutes;
+    public int timeSeconds;
 
     private void Awake()
     {
@@ -32,11 +32,8 @@ public class PuzzleTimer : MonoBehaviour
     {
 
         if (finished)
-        {
-            InteractionManager.finalMinutes = timeMinutes;
-            InteractionManager.finalSeconds = timeSeconds;
             return;
-        }
+
 
         float t = Time.time - startTime;
         timeMinutes = ((int)t / 60);

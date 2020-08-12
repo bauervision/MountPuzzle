@@ -27,9 +27,14 @@ Assets/Free_Rocks
 Assets/Crates*
 Assets/Boats
 Assets/Audio
-Assets/Bauer*
-Packages/
+Assets/Megascans
+Assets/Quixel
+Assets/UnityPackages/
+Assets/Allegorithmic
+Assets/BauerVision*
+Assets/Materials/
 RWT_Cache/
+A
 
 
 Lightmap*

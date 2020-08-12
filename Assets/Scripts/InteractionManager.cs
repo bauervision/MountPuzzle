@@ -10,6 +10,10 @@ public class InteractionManager : MonoBehaviour
 
     public GameObject spawnItem;
 
+    // Player abilities
+    public bool canJump = true;
+    public bool canSprint = true;
+    public bool speedReduced = false;
 
     #region FindTheseItemsDuringAwake
     private GameObject[] spawnLocations;
@@ -24,6 +28,8 @@ public class InteractionManager : MonoBehaviour
     private Image mainItemSprite;
     private Image bonusItem1Sprite;
     private Image bonusItem2Sprite;
+    private Image finalBonusItem1Sprite;
+    private Image finalBonusItem2Sprite;
     private Text GemText;
     private Text CoinText;
     private Text finalTimeText;
@@ -46,6 +52,7 @@ public class InteractionManager : MonoBehaviour
     private GameObject notifyPanel;
     private Text notifyText;
     private Text levelDescriptionText;
+    private Text nextLevelName;
 
     #endregion
 
@@ -79,6 +86,9 @@ public class InteractionManager : MonoBehaviour
     private Color OffColor = new Color(0, 0, 0, 0);
     private Color OnColor = new Color(0, 0, 0, 0.7f);
 
+    private bool foundBonus1 = false;
+    private bool foundBonus2 = false;
+
 
     private void Awake()
     {
@@ -108,6 +118,8 @@ public class InteractionManager : MonoBehaviour
         mainItemSprite = GameObject.Find("MainItemSprite").GetComponent<Image>();
         bonusItem1Sprite = GameObject.Find("BonusItem1Sprite").GetComponent<Image>();
         bonusItem2Sprite = GameObject.Find("BonusItem2Sprite").GetComponent<Image>();
+        finalBonusItem1Sprite = GameObject.Find("FinalBonusStar1").GetComponent<Image>();
+        finalBonusItem2Sprite = GameObject.Find("FinalBonusStar2").GetComponent<Image>();
 
         // assign all Text objects
         GoodieBagText = GameObject.Find("GoodieBagText").GetComponent<Text>();
@@ -122,7 +134,7 @@ public class InteractionManager : MonoBehaviour
         finalTimeText = GameObject.Find("FinalTimeText").GetComponent<Text>();
         finalCoinText = GameObject.Find("FinalCoinText").GetComponent<Text>();
         finalGemText = GameObject.Find("FinalGemText").GetComponent<Text>();
-        finalDeductionText = GameObject.Find("FinalCoinText").GetComponent<Text>();
+        finalDeductionText = GameObject.Find("FinalDeductionText").GetComponent<Text>();
         tallyTimeText = GameObject.Find("TallyTimeText").GetComponent<Text>();
         tallyCollectibleText = GameObject.Find("TallyCollectibleText").GetComponent<Text>();
         tallyItemText = GameObject.Find("TallyItemText").GetComponent<Text>();
@@ -130,6 +142,7 @@ public class InteractionManager : MonoBehaviour
         finalScoreText = GameObject.Find("FinalScoreText").GetComponent<Text>();
         notifyText = GameObject.Find("NotifyText").GetComponent<Text>();
         levelDescriptionText = GameObject.Find("LevelDescription").GetComponent<Text>();
+        nextLevelName = GameObject.Find("NextLevelName").GetComponent<Text>();
 
         // now handle game level name update
         GameObject.Find("LevelTitleInitial").GetComponent<Text>().text = thisLevel.ToString();
@@ -140,43 +153,43 @@ public class InteractionManager : MonoBehaviour
 
     private void HandleLevelDescriptionUpdate()
     {
-        print("handle update");
+        print("Loaded thisLevel: " + (int)thisLevel);
         // handle level descriptions
         switch ((int)thisLevel)
         {
-            case 1:
+            case 0:
                 {
                     levelDescriptionText.text = "Let's warm up with a nice easy island."; break;
                 }
-            case 2:
+            case 1:
                 {
                     levelDescriptionText.text = "Time to crank it up a little and make you work for these items!"; break;
                 }
-            case 3:
+            case 2:
                 {
                     levelDescriptionText.text = "You're doing great, but now let's introduce you to your first puzzle."; break;
                 }
-            case 4:
+            case 3:
                 {
                     levelDescriptionText.text = "Level 4 description"; break;
                 }
-            case 5:
+            case 4:
                 {
                     levelDescriptionText.text = "Level 5 description"; break;
                 }
-            case 6:
+            case 5:
                 {
                     levelDescriptionText.text = "Level 6 description"; break;
                 }
-            case 7:
+            case 6:
                 {
                     levelDescriptionText.text = "Level 7 description"; break;
                 }
-            case 8:
+            case 7:
                 {
                     levelDescriptionText.text = "Level 8 description"; break;
                 }
-            case 9:
+            case 8:
                 {
                     levelDescriptionText.text = "Level 9 description"; break;
                 }
@@ -255,7 +268,7 @@ public class InteractionManager : MonoBehaviour
 
                     break;
                 }
-            case 4: { break; }//bad knees
+            case 4: { canJump = false; canSprint = false; break; }//bad knees
             case 5: { GoodieBagStamina.SetActive(true); break; }//stamina
             case 6: { break; }//poison
             default: { break; } // bag o nothing
@@ -321,8 +334,8 @@ public class InteractionManager : MonoBehaviour
         {
             // main level items
             case 0: { LevelCompleted(); break; }
-            case 1: { instance.levelBonusItemScore++; instance.bonusItem1Sprite.sprite = instance.foundSprite; break; }
-            case 2: { instance.levelBonusItemScore++; instance.bonusItem2Sprite.sprite = instance.foundSprite; break; }
+            case 1: { instance.levelBonusItemScore++; instance.bonusItem1Sprite.sprite = instance.foundSprite; instance.foundBonus1 = true; break; }
+            case 2: { instance.levelBonusItemScore++; instance.bonusItem2Sprite.sprite = instance.foundSprite; instance.foundBonus2 = true; break; }
             // collectibles
             case 3: { instance.levelCoinCount++; break; }
             case 4: { instance.levelGemCount++; break; }
@@ -379,16 +392,37 @@ public class InteractionManager : MonoBehaviour
         LevelLoader.instance.UnlockNextLevel();
     }
 
+    private int HandleTimeScore()
+    {
+        finalMinutes = PuzzleTimer.instance.timeMinutes;
+        finalSeconds = PuzzleTimer.instance.timeSeconds;
+
+        switch (finalMinutes)
+        {
+            case 4: { return 100; }
+            case 3: { return 250; }
+            case 2: { return 500; }
+            case 1: { return 750; }
+            case 0: { return 1000; }
+            default: { return 50; }
+        }
+    }
+
     private void CalculateLevelPoints()
     {
         // coins are 1 point each, gems are 5 pts each
         int collectibleScore = levelCoinCount + (levelGemCount * 5);
 
+        // handle bonus items
         int itemScore = (levelBonusItemScore * 50) + 100; // 100 is for getting the main item
+        if (foundBonus1)
+            finalBonusItem1Sprite.sprite = foundSprite;
 
-        // TODO figure out time calculation
-        int timeScore = 200;
+        if (foundBonus2)
+            finalBonusItem2Sprite.sprite = foundSprite;
 
+        // time
+        int timeScore = HandleTimeScore();
         levelTotalPoints = collectibleScore + itemScore + timeScore;
 
         // handle deductions
@@ -406,6 +440,9 @@ public class InteractionManager : MonoBehaviour
         tallyItemText.text = itemScore.ToString() + "pts!";
         tallyDeductionText.text = levelDeduction.ToString() + "% = " + deductionValue.ToString() + "pts!";
 
+        // update next level name
+        int currentLevelIndex = (int)thisLevel;
+        nextLevelName.text = LevelLoader.instance.levelNames[currentLevelIndex + 1];
         // finally set the total score
         finalScoreText.text = "Total: " + levelTotalPoints.ToString();
 
