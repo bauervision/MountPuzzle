@@ -13,7 +13,10 @@ public class InteractionManager : MonoBehaviour
     // Player abilities
     public bool canJump = true;
     public bool canSprint = true;
+    public bool hasStamina = false;
     public bool speedReduced = false;
+
+    public Invector.vCharacterController.vThirdPersonController cc;
 
     #region FindTheseItemsDuringAwake
     private GameObject[] spawnLocations;
@@ -123,7 +126,7 @@ public class InteractionManager : MonoBehaviour
 
         // assign all Text objects
         GoodieBagText = GameObject.Find("GoodieBagText").GetComponent<Text>();
-        GoodieBagUIText = GameObject.Find("GoodieBagText").GetComponent<Text>();
+        GoodieBagUIText = GameObject.Find("GoodieBagUIText").GetComponent<Text>();
         GoodieBagStamina = GameObject.Find("GoodieBagStamina");
         initialCanvas = GameObject.Find("InitialCanvas");
         gameCanvas = GameObject.Find("GameCanvas");
@@ -153,7 +156,7 @@ public class InteractionManager : MonoBehaviour
 
     private void HandleLevelDescriptionUpdate()
     {
-        print("Loaded thisLevel: " + (int)thisLevel);
+
         // handle level descriptions
         switch ((int)thisLevel)
         {
@@ -224,6 +227,7 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
+
     public void GrabGoodieBag()
     {
         GoodieBag.SetActive(false);
@@ -269,8 +273,8 @@ public class InteractionManager : MonoBehaviour
                     break;
                 }
             case 4: { canJump = false; canSprint = false; break; }//bad knees
-            case 5: { GoodieBagStamina.SetActive(true); break; }//stamina
-            case 6: { break; }//poison
+            case 5: { hasStamina = true; GoodieBagStamina.SetActive(true); break; }//stamina
+            case 6: { SetPoisoned(); break; }//poison
             default: { break; } // bag o nothing
         }
 
@@ -448,10 +452,22 @@ public class InteractionManager : MonoBehaviour
 
     }
 
+
+    private void SetPoisoned()
+    {
+        speedReduced = true;
+        hasStamina = true;
+        GoodieBagStamina.SetActive(true);
+    }
     private void Update()
     {
         GemText.text = instance.levelGemCount.ToString();
         CoinText.text = instance.levelCoinCount.ToString();
+
+        // if (Input.GetKey(KeyCode.P))
+        // {
+        //     SetPoisoned();
+        // }
     }
 
 }

@@ -683,7 +683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openCloseEvents: 0
-  openCloseWindow: 0
+  openCloseWindow: 1
   selectedToolbar: 2
   _isDead: 0
   _currentHealth: 0
@@ -727,9 +727,8 @@ MonoBehaviour:
   onActionExit:
     m_PersistentCalls:
       m_Calls: []
-  maxStamina: 200
-  staminaRecovery: 1.2
-  sprintStamina: 30
+  maxStamina: 100
+  staminaRecovery: 0.1
   jumpStamina: 30
   rollStamina: 25
   OnJump:
@@ -764,14 +763,14 @@ MonoBehaviour:
   disableAnimations: 0
   useLeanMovement: 1
   freeSpeed:
-    movementSmooth: 6
+    movementSmooth: 10
     animationSmooth: 0.2
     rotationSpeed: 20
     walkByDefault: 0
     rotateWithCamera: 0
     walkSpeed: 2
-    runningSpeed: 4
-    sprintSpeed: 6
+    runningSpeed: 8
+    sprintSpeed: 16
     crouchSpeed: 2
   strafeSpeed:
     movementSmooth: 6

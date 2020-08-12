@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66420088877584305}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.09, z: 0}
+  m_LocalScale: {x: 1.1083, y: 1.1083, z: 1.1083}
   m_Children: []
   m_Father: {fileID: 8515713111165808082}
   m_RootOrder: 2
@@ -696,8 +696,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2577701990822796378}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.09, z: 0}
+  m_LocalScale: {x: 1.1083, y: 1.1083, z: 1.1083}
   m_Children: []
   m_Father: {fileID: 8515713111165808082}
   m_RootOrder: 4
@@ -878,8 +878,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3241576124745196281}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.09, z: 0}
+  m_LocalScale: {x: 1.1083, y: 1.1083, z: 1.1083}
   m_Children: []
   m_Father: {fileID: 8515713111165808082}
   m_RootOrder: 1
@@ -1679,8 +1679,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5951063786428795039}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: 0.09, z: 0}
+  m_LocalScale: {x: 1.1083, y: 1.1083, z: 1.1083}
   m_Children: []
   m_Father: {fileID: 8515713111165808082}
   m_RootOrder: 5
@@ -2403,8 +2403,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8752378308258868817}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.09, z: 0}
+  m_LocalScale: {x: 1.1083, y: 1.1083, z: 1.1083}
   m_Children: []
   m_Father: {fileID: 8515713111165808082}
   m_RootOrder: 0
@@ -2888,9 +2888,8 @@ MonoBehaviour:
   onActionExit:
     m_PersistentCalls:
       m_Calls: []
-  maxStamina: 200
-  staminaRecovery: 1.2
-  sprintStamina: 30
+  maxStamina: 100
+  staminaRecovery: 0.1
   jumpStamina: 30
   rollStamina: 25
   OnJump:
@@ -2921,18 +2920,18 @@ MonoBehaviour:
   stopMoveHeight: 0.65
   stopMoveDistance: 0.1
   useRootMotion: 0
-  locomotionType: 0
+  locomotionType: 2
   disableAnimations: 0
   useLeanMovement: 1
   freeSpeed:
-    movementSmooth: 6
+    movementSmooth: 10
     animationSmooth: 0.2
     rotationSpeed: 20
     walkByDefault: 0
     rotateWithCamera: 0
     walkSpeed: 2
     runningSpeed: 8
-    sprintSpeed: 12
+    sprintSpeed: 16
     crouchSpeed: 2
   strafeSpeed:
     movementSmooth: 6
@@ -3133,8 +3132,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9124954841766761523}
   m_LocalRotation: {x: 0.0083802035, y: -0.024182122, z: 0.02153212, w: 0.99944055}
-  m_LocalPosition: {x: 0.0020073156, y: 0.9417678, z: 0.005934182}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.0020073156, y: 1.0317678, z: 0.005934182}
+  m_LocalScale: {x: 1.1083, y: 1.1083, z: 1.1083}
   m_Children:
   - {fileID: 5918629724129981498}
   - {fileID: 69841967370041977}
