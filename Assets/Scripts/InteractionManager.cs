@@ -490,6 +490,8 @@ public class InteractionManager : MonoBehaviour
         tallyCollectibleText.text = collectibleScore.ToString() + "pts!";
         tallyItemText.text = itemScore.ToString() + "pts!";
 
+        finalSpecialText.text = specialPoints.ToString();
+
         if (levelDeduction < 0)
         {
             tallyDeductionText.text = "-" + levelDeduction + "pts!";

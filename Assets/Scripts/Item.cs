@@ -57,7 +57,7 @@ public class Item : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
 
         // hide this item by default if one of these categories
-        if (myType == ItemType.Potion || myType == ItemType.Jug)
+        if (myType == ItemType.Potion || myType == ItemType.Jug || myType == ItemType.Halo)
         {
             EnableThisObject(false);
         }
@@ -92,19 +92,26 @@ public class Item : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Renderer[] renderers = GetComponentsInChildren<Renderer>();
-            foreach (Renderer r in renderers)
-                r.enabled = false;
-
             _audioSource.PlayOneShot(_audioClip);
 
             // trigger item collected
             InteractionManager.SetItemFound((int)myType);
 
+            // hide the mesh right away
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            foreach (Renderer r in renderers)
+                r.enabled = false;
+            // disable the collider right away
+            gameObject.GetComponent<SphereCollider>().enabled = false;
+
             // dont show the display in these cases
-            if (myType != ItemType.Main || myType != ItemType.Coin)
+            if (myType != ItemType.Main && myType != ItemType.Coin)
             {
                 HandleMessageDisplay();
+            }
+            else
+            {
+                Destroy(gameObject, _audioClip.length);
             }
         }
     }
@@ -120,8 +127,8 @@ public class Item : MonoBehaviour
             counter += Time.deltaTime;
             messageText.color = Color.Lerp(TextStartColor, TextEndColor, counter);
             messagePanelImage.color = Color.Lerp(OnColor, OffColor, counter);
-            // destroy once we have done everything we need to do IF this is a coin or gem
-            if (myType == ItemType.Coin || myType == ItemType.Gem)
+            // destroy once we have done everything we need to do IF this is a gem
+            if (myType == ItemType.Gem)
                 Destroy(gameObject, _audioClip.length);
             else
             {
@@ -160,6 +167,14 @@ public class Item : MonoBehaviour
         if (myType == ItemType.Paddle)
         {
             // tip player to find the boat to go to bonus island
+        }
+
+        if (myType == ItemType.Halo)
+        {
+            if (PuzzleTimer.instance.timeMinutes > 3)
+            {
+                EnableThisObject(true);
+            }
         }
 
         if (willSpin)
