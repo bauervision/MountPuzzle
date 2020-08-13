@@ -153,7 +153,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.79
+  m_Radius: 1
   m_Center: {x: 0, y: -0.2, z: 0}
 --- !u!114 &9038591550693610195
 MonoBehaviour:
@@ -284,6 +284,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: {x: 0, y: 0.1}
+  textureParameters:
+  - _MainTex
+  offSet: {x: 0, y: 0}
 --- !u!1001 &6110583227625414036
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -311,6 +314,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3513351175444114254, guid: 673927d187949d9428af16780137aa6e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3725751150058355911, guid: 673927d187949d9428af16780137aa6e,
         type: 3}
       propertyPath: m_Mesh
@@ -320,6 +328,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3893069701122573983, guid: 673927d187949d9428af16780137aa6e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4460632943452209326, guid: 673927d187949d9428af16780137aa6e,
         type: 3}
@@ -341,10 +354,20 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5603694515728283076, guid: 673927d187949d9428af16780137aa6e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7897491049774229686, guid: 673927d187949d9428af16780137aa6e,
         type: 3}
       propertyPath: m_Name
       value: BloodBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897491049774229686, guid: 673927d187949d9428af16780137aa6e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8090762879475759338, guid: 673927d187949d9428af16780137aa6e,
         type: 3}
@@ -415,6 +438,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.6246137
+      objectReference: {fileID: 0}
+    - target: {fileID: 8963648196392474832, guid: 673927d187949d9428af16780137aa6e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 673927d187949d9428af16780137aa6e, type: 3}

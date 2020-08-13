@@ -57,6 +57,9 @@ public class InteractionManager : MonoBehaviour
     private Text levelDescriptionText;
     private Text nextLevelName;
 
+    private GameObject[] coinList;
+    private GameObject[] gemList;
+
     #endregion
 
     public Sprite foundSprite;
@@ -67,7 +70,7 @@ public class InteractionManager : MonoBehaviour
 
 
     private string[] goodieBag = new[] { "Bag O' Nothing", "Goggles", "Halo", "Radar", "Bad Knees", "Stamina", "Poisoned" };
-    private int[] goodieBagDeductions = new[] { 0, 1, 5, 10, -1, -5, -10 };
+    private int[] goodieBagDeductions = new[] { 0, -10, -100, -200, 50, 150, 500 };
 
     private string[] goodieBagDescription = new[] {
         "Bag O' Nothing!\nYou enter the level with all that you came with, no help or hindrances to speak of, good luck!",
@@ -80,9 +83,9 @@ public class InteractionManager : MonoBehaviour
 
     private string levelDeductionText = "None";
     private int levelDeduction = 0;
-    private int levelBonusItemScore = 0;
+    public int levelBonusItemScore = 0;
     private int levelCoinCount = 0;
-    private int levelGemCount = 0;
+    public int levelGemCount = 0;
     private int levelTotalPoints = 0;
     private int chosenDropzoneIndex = -1;
 
@@ -239,7 +242,7 @@ public class InteractionManager : MonoBehaviour
         levelDeduction = goodieBagDeductions[goodieBagChoice];
 
         // set the game UI
-        GoodieBagUIText.text = goodieBagDescription[goodieBagChoice];
+        GoodieBagUIText.text = goodieBag[goodieBagChoice];
         // turn off all abilities first
 
 
@@ -256,15 +259,12 @@ public class InteractionManager : MonoBehaviour
                 }
             case 2: // halo
                 {
-                    foreach (GameObject dropzone in spawnLocations)
-                    {
-                        dropzone.GetComponentInChildren<Light>().enabled = true;
-                    }
+                    EnableHalo();
                     break;
                 }
             case 3: //radar
                 {
-                    print("Radar" + chosenDropzoneIndex);
+
                     if (chosenDropzoneIndex != -1)
                     {
                         spawnLocations[chosenDropzoneIndex].GetComponentInChildren<Light>().enabled = true;
@@ -274,10 +274,19 @@ public class InteractionManager : MonoBehaviour
                 }
             case 4: { canJump = false; canSprint = false; break; }//bad knees
             case 5: { hasStamina = true; GoodieBagStamina.SetActive(true); break; }//stamina
-            case 6: { SetPoisoned(); break; }//poison
+            case 6: { SetPoisoned(true); break; }//poison
             default: { break; } // bag o nothing
         }
 
+    }
+
+    private void EnableHalo()
+    {
+        GoodieBagUIText.text = goodieBag[2];
+        foreach (GameObject dropzone in spawnLocations)
+        {
+            dropzone.GetComponentInChildren<Light>().enabled = true;
+        }
     }
 
     private void LoadNextLevel()
@@ -309,6 +318,8 @@ public class InteractionManager : MonoBehaviour
 
     private void Start()
     {
+        coinList = GameObject.FindGameObjectsWithTag("Coin");
+        gemList = GameObject.FindGameObjectsWithTag("Gem");
 
         //DontDestroyOnLoad(this.gameObject);
         gameCamera.transform.gameObject.SetActive(false);
@@ -328,7 +339,8 @@ public class InteractionManager : MonoBehaviour
     private void SpawnItem()
     {
         chosenDropzoneIndex = Random.Range(0, spawnLocations.Length);
-        Instantiate(spawnItem, spawnLocations[chosenDropzoneIndex].transform.position, Quaternion.identity);
+        GameObject mountainBlood = Instantiate(spawnItem, spawnLocations[chosenDropzoneIndex].transform.position, Quaternion.identity);
+        mountainBlood.GetComponent<Item>().enabled = true;
     }
 
     public static void SetItemFound(int itemFound)
@@ -343,9 +355,12 @@ public class InteractionManager : MonoBehaviour
             // collectibles
             case 3: { instance.levelCoinCount++; break; }
             case 4: { instance.levelGemCount++; break; }
-            case 5: { break; }
-            case 6: { break; }
-            case 7: { break; }
+            case 5: { break; }//paddle
+            case 6: { break; }//chest
+            case 7: { instance.SetPoisoned(false); break; }//potion
+            case 8: { break; }//jug
+            case 9: { instance.EnableHalo(); break; }//halo enabled
+            case 10: { break; } // found the horse
 
             default: { break; }
         }
@@ -365,6 +380,7 @@ public class InteractionManager : MonoBehaviour
     private void SetWarning()
     {
         notifyPanel.GetComponent<Image>().color = OnColor;
+        notifyText.color = new Color(1, 1, 1, 1);
         notifyText.text = "You've found the Mountain Blood!\nBe sure you are ready to end the level before you grab it!\nDid you find everything you wanted to find in this level?";
 
     }
@@ -430,8 +446,7 @@ public class InteractionManager : MonoBehaviour
         levelTotalPoints = collectibleScore + itemScore + timeScore;
 
         // handle deductions
-        var deductionValue = Mathf.RoundToInt(levelDeduction / 100);
-        levelTotalPoints = levelTotalPoints - deductionValue;
+
 
         // set all text objects
         finalTimeText.text = "Time:" + finalMinutes + ":" + finalSeconds;
@@ -442,7 +457,22 @@ public class InteractionManager : MonoBehaviour
         tallyTimeText.text = timeScore.ToString() + "pts!";
         tallyCollectibleText.text = collectibleScore.ToString() + "pts!";
         tallyItemText.text = itemScore.ToString() + "pts!";
-        tallyDeductionText.text = levelDeduction.ToString() + "% = " + deductionValue.ToString() + "pts!";
+
+        if (levelDeduction < 0)
+        {
+            tallyDeductionText.text = "-" + levelDeduction + "pts!";
+            levelTotalPoints = levelTotalPoints - levelDeduction;
+        }
+        else if (levelDeduction > 0)
+        {
+            tallyDeductionText.text = "+" + levelDeduction + "pts!";
+            levelTotalPoints = levelTotalPoints + levelDeduction;
+        }
+        else
+        {
+            tallyDeductionText.text = "None";
+        }
+
 
         // update next level name
         int currentLevelIndex = (int)thisLevel;
@@ -453,21 +483,21 @@ public class InteractionManager : MonoBehaviour
     }
 
 
-    private void SetPoisoned()
+    private void SetPoisoned(bool state)
     {
-        speedReduced = true;
-        hasStamina = true;
-        GoodieBagStamina.SetActive(true);
+        speedReduced = state;
+        hasStamina = state;
+        GoodieBagStamina.SetActive(state);
     }
     private void Update()
     {
-        GemText.text = instance.levelGemCount.ToString();
-        CoinText.text = instance.levelCoinCount.ToString();
+        GemText.text = instance.levelGemCount.ToString() + " / " + gemList.Length;
+        CoinText.text = instance.levelCoinCount.ToString() + " / " + coinList.Length;
 
-        // if (Input.GetKey(KeyCode.P))
-        // {
-        //     SetPoisoned();
-        // }
+        if (Input.GetKey(KeyCode.P))
+        {
+            SetPoisoned(true);
+        }
     }
 
 }

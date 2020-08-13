@@ -33,11 +33,12 @@ TagManager:
   - PW - Prop
   - PW - Building
   - Synty Tree
-  - PW - Nature
-  - Synty Medium Farm
-  - Synty Small Farm
   - DropZone
   - InteractionManager
+  - Coin
+  - Gem
+  - Potion
+  - Jug
   layers:
   - Default
   - TransparentFX
