@@ -7,7 +7,7 @@ public class Item : MonoBehaviour
     public AudioClip _audioClip;
     public GameObject _particle;
 
-    public enum ItemType { Main, Crystal1, Crystal2, Coin, Gem, Paddle, Chest, Potion, Jug, Halo, Horse };
+    public enum ItemType { Main, Crystal1, Crystal2, Coin, Gem, Paddle, Chest, Potion, Jug, Halo, Horse, Bear, Ornament, Starfish };
 
     public ItemType myType;
 
@@ -38,7 +38,10 @@ public class Item : MonoBehaviour
     "Your poisoning has been healed!",
     "All stamina issues have been resolved!",
     "You have enabled the Halo to help you locate this Mountain's blood!",
-    "A small, hand carved wooden horse!  What a rare find!"
+    "A small, hand carved wooden horse!  What a rare find!",
+    "A child's stuffed bear, this is incredibly rare to find, well done!",
+    "A very old, delicately carved ornament of some kind, you are an excellent scavenger!",
+    "Hmm...I believe this is a starfish, we have not seen any these in decades!"
 };
 
     private float fadeDuration = 2f;
@@ -98,13 +101,11 @@ public class Item : MonoBehaviour
             // trigger item collected
             InteractionManager.SetItemFound((int)myType);
 
-            // hide the display only in these cases
+            // dont show the display in these cases
             if (myType != ItemType.Main || myType != ItemType.Coin)
             {
                 HandleMessageDisplay();
             }
-
-
         }
     }
 
@@ -119,8 +120,14 @@ public class Item : MonoBehaviour
             counter += Time.deltaTime;
             messageText.color = Color.Lerp(TextStartColor, TextEndColor, counter);
             messagePanelImage.color = Color.Lerp(OnColor, OffColor, counter);
-            // destroy once we have done everything we need to do
-            Destroy(gameObject, _audioClip.length);
+            // destroy once we have done everything we need to do IF this is a coin or gem
+            if (myType == ItemType.Coin || myType == ItemType.Gem)
+                Destroy(gameObject, _audioClip.length);
+            else
+            {
+                EnableThisObject(false);
+            }
+
             yield return null;
         }
     }

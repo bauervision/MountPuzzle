@@ -44,6 +44,7 @@ public class InteractionManager : MonoBehaviour
     private Text tallyItemText;
     private Text tallyDeductionText;
     private Text finalScoreText;
+    private Text specialText;
     private Button LoadLevelButton;
     private Button LevelSelectButtonInitial;
     private Button LevelSelectButtonFinal;
@@ -56,7 +57,9 @@ public class InteractionManager : MonoBehaviour
     private Text notifyText;
     private Text levelDescriptionText;
     private Text nextLevelName;
+    private Text finalSpecialText;
 
+    private GameObject finalSpecialPanel;
     private GameObject[] coinList;
     private GameObject[] gemList;
 
@@ -95,6 +98,8 @@ public class InteractionManager : MonoBehaviour
     private bool foundBonus1 = false;
     private bool foundBonus2 = false;
 
+    private int specialPoints = 0;
+
 
     private void Awake()
     {
@@ -105,6 +110,7 @@ public class InteractionManager : MonoBehaviour
         // gameobjects
         gameController = GameObject.Find("vGameController");
         notifyPanel = GameObject.Find("NotifyPanel");
+        finalSpecialPanel = GameObject.Find("FinalSpecialText");
 
 
         // grab all dropzones in the scene
@@ -149,6 +155,9 @@ public class InteractionManager : MonoBehaviour
         notifyText = GameObject.Find("NotifyText").GetComponent<Text>();
         levelDescriptionText = GameObject.Find("LevelDescription").GetComponent<Text>();
         nextLevelName = GameObject.Find("NextLevelName").GetComponent<Text>();
+        specialText = GameObject.Find("SpecialText").GetComponent<Text>();
+        specialText.text = "";
+        finalSpecialText = GameObject.Find("TallySpecialText").GetComponent<Text>();
 
         // now handle game level name update
         GameObject.Find("LevelTitleInitial").GetComponent<Text>().text = thisLevel.ToString();
@@ -332,6 +341,7 @@ public class InteractionManager : MonoBehaviour
         InitializeGoodieBagAbilities();
 
         SetWarningHidden();
+        finalSpecialPanel.SetActive(false);
 
         HandleLevelDescriptionUpdate();
     }
@@ -343,6 +353,25 @@ public class InteractionManager : MonoBehaviour
         mountainBlood.GetComponent<Item>().enabled = true;
     }
 
+    private void FoundSpecialItem(int itemIndex)
+    {
+        if (!finalSpecialPanel.activeInHierarchy)
+            finalSpecialPanel.SetActive(true);
+
+        int bonusAmount = 0;
+        switch (itemIndex)
+        {
+            case 5: { bonusAmount = 500; break; }
+            case 6: { bonusAmount = 1000; break; }
+            case 10: { bonusAmount = 2500; break; }
+            case 11: { bonusAmount = 3000; break; }
+            case 12: { bonusAmount = 5000; break; }
+            case 13: { bonusAmount = 1500; break; }
+            default: { break; }
+        }
+        specialPoints = specialPoints + bonusAmount;
+        specialText.text = "Special:" + specialPoints;
+    }
     public static void SetItemFound(int itemFound)
     {
 
@@ -355,12 +384,15 @@ public class InteractionManager : MonoBehaviour
             // collectibles
             case 3: { instance.levelCoinCount++; break; }
             case 4: { instance.levelGemCount++; break; }
-            case 5: { break; }//paddle
-            case 6: { break; }//chest
+            case 5: { instance.FoundSpecialItem(itemFound); break; }// found the paddle
+            case 6: { instance.FoundSpecialItem(itemFound); break; }//found the chest
             case 7: { instance.SetPoisoned(false); break; }//potion
             case 8: { break; }//jug
             case 9: { instance.EnableHalo(); break; }//halo enabled
-            case 10: { break; } // found the horse
+            case 10: { instance.FoundSpecialItem(itemFound); break; } // found the horse
+            case 11: { instance.FoundSpecialItem(itemFound); break; } // found the bear
+            case 12: { instance.FoundSpecialItem(itemFound); break; } // found the ornament
+            case 13: { instance.FoundSpecialItem(itemFound); break; } // found the starfish
 
             default: { break; }
         }
@@ -473,6 +505,7 @@ public class InteractionManager : MonoBehaviour
             tallyDeductionText.text = "None";
         }
 
+        levelTotalPoints = levelTotalPoints + specialPoints;
 
         // update next level name
         int currentLevelIndex = (int)thisLevel;
