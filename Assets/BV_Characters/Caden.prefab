@@ -831,7 +831,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3663573341529685031}
-  - component: {fileID: 3805383830702960853}
   m_Layer: 8
   m_Name: Shooter
   m_TagString: Untagged
@@ -846,27 +845,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3019740138934143850}
-  m_LocalRotation: {x: -0.26187834, y: -0, z: -0, w: 0.96510094}
-  m_LocalPosition: {x: 0, y: 1.072, z: 0.468}
+  m_LocalRotation: {x: -0.20082916, y: -0.677988, z: 0.20082916, w: 0.677988}
+  m_LocalPosition: {x: 0, y: 1.072, z: 0.46798706}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8515713111165808082}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: -30.363, y: 0, z: 0}
---- !u!114 &3805383830702960853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3019740138934143850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 721fced4b6ab5ac4888fea95ede8929e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletSpeed: 10
-  bullet: {fileID: 4246194341852534853, guid: 163a37d1c8207c443bdcef70c42c666d, type: 3}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 33}
 --- !u!1 &3152595681967622261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2569,6 +2554,7 @@ GameObject:
   - component: {fileID: 8189613995119904743}
   - component: {fileID: 8189613995119904740}
   - component: {fileID: -429594265158797021}
+  - component: {fileID: 9109991754132416069}
   m_Layer: 8
   m_Name: Caden
   m_TagString: Player
@@ -2705,7 +2691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openCloseEvents: 0
-  openCloseWindow: 0
+  openCloseWindow: 1
   selectedToolbar: 0
   unlockCursorOnStart: 0
   showCursorOnStart: 0
@@ -3154,6 +3140,21 @@ MonoBehaviour:
   isExitingLadder: 0
   triggerEnterOnce: 0
   triggerExitOnce: 0
+--- !u!114 &9109991754132416069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9035966156533200744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 721fced4b6ab5ac4888fea95ede8929e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seed: {fileID: 4246194341852534853, guid: 163a37d1c8207c443bdcef70c42c666d, type: 3}
+  projectileVelocity: 700
+  timeBetweenShots: 0
 --- !u!1 &9124954841766761523
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,21 +1,43 @@
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-
+// ? 2017 TheFlyingKeyboard and released under MIT License
+// theflyingkeyboard.net
 public class Launcher : MonoBehaviour
 {
-    public float bulletSpeed = 60;
-    public GameObject bullet;
-
-
-    void Fire()
+    public GameObject seed;
+    private Rigidbody projectile;
+    private Transform projectileSpawnPoint;
+    public float projectileVelocity;
+    public float timeBetweenShots;
+    private float timeBetweenShotsCounter;
+    private bool canShoot;
+    // Use this for initialization
+    void Start()
     {
-        Rigidbody bulletClone = Instantiate(bullet.GetComponent<Rigidbody>(), transform.position, transform.rotation);
-        bulletClone.velocity = transform.forward * bulletSpeed;
+        projectile = seed.GetComponent<Rigidbody>();
+        projectileSpawnPoint = GameObject.Find("Shooter").transform;
+        canShoot = false;
+        timeBetweenShotsCounter = timeBetweenShots;
     }
 
+    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
-            Fire();
+        if (ControlFreak2.CF2Input.GetMouseButtonDown(0) && canShoot)
+        {
+            Rigidbody bulletInstance = Instantiate(projectile, projectileSpawnPoint.position, Quaternion.Euler(new Vector3(0, 0, transform.localEulerAngles.z))) as Rigidbody;
+            bulletInstance.GetComponent<Rigidbody>().AddForce(projectileSpawnPoint.right * projectileVelocity);
+            canShoot = false;
+        }
+        if (!canShoot)
+        {
+            timeBetweenShotsCounter -= Time.deltaTime;
+            if (timeBetweenShotsCounter <= 0)
+            {
+                canShoot = true;
+                timeBetweenShotsCounter = timeBetweenShots;
+            }
+        }
     }
 }

@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/StartMenu.unity
     guid: 815d56042d1357a4eb16c6381efc7fc4
   - enabled: 1
-    path: Assets/Scenes/FrigidForest.unity
-    guid: 2e297cf492aa11945b640fe8aa34308b
-  - enabled: 1
     path: Assets/Scenes/IsleOfNoob.unity
     guid: 4ac595a403876634a9a694804ca38fd7
   - enabled: 1
     path: Assets/Scenes/MountEgo.unity
     guid: b56c004971416674aabcca09eea35241
+  - enabled: 1
+    path: Assets/Scenes/FrigidForest.unity
+    guid: 2e297cf492aa11945b640fe8aa34308b
   m_configObjects: {}

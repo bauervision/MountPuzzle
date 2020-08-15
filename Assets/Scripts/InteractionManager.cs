@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -19,6 +19,7 @@ public class InteractionManager : MonoBehaviour
     public Invector.vCharacterController.vThirdPersonController cc;
 
     #region FindTheseItemsDuringAwake
+
     private GameObject[] spawnLocations;
     private GameObject GoodieBag;
     private Text GoodieBagText;
@@ -28,6 +29,7 @@ public class InteractionManager : MonoBehaviour
     private GameObject gameCanvas;
     private GameObject levelCanvas;
     private GameObject finalCanvas;
+    private GameObject mobileCanvas;
     private Image mainItemSprite;
     private Image bonusItem1Sprite;
     private Image bonusItem2Sprite;
@@ -141,6 +143,7 @@ public class InteractionManager : MonoBehaviour
         gameCanvas = GameObject.Find("GameCanvas");
         levelCanvas = GameObject.Find("LevelCanvas");
         finalCanvas = GameObject.Find("FinalCanvas");
+        mobileCanvas = GameObject.Find("CF2-Canvas");
         GemText = GameObject.Find("GemTextUI").GetComponent<Text>();
         CoinText = GameObject.Find("CoinTextUI").GetComponent<Text>();
         finalTimeText = GameObject.Find("FinalTimeText").GetComponent<Text>();
@@ -306,6 +309,7 @@ public class InteractionManager : MonoBehaviour
     {
         initialCanvas.SetActive(false);
         gameCanvas.SetActive(true);
+        mobileCanvas.SetActive(true);
         uiCamera.transform.gameObject.SetActive(false);
         gameCamera.transform.gameObject.SetActive(true);
         gameController.GetComponent<Invector.vGameController>().enabled = true;
@@ -316,6 +320,7 @@ public class InteractionManager : MonoBehaviour
     {
         levelCanvas.SetActive(true);
         initialCanvas.SetActive(false);
+        mobileCanvas.SetActive(false);
     }
 
     public void ReturnToLaunch()
@@ -335,9 +340,11 @@ public class InteractionManager : MonoBehaviour
         gameCanvas.SetActive(false);
         finalCanvas.SetActive(false);
         levelCanvas.SetActive(false);
+        mobileCanvas.SetActive(false);
         instance = this;
         SpawnItem();
         GoodieBagText.text = "";
+        GoodieBagUIText.text = "";
         InitializeGoodieBagAbilities();
 
         SetWarningHidden();
@@ -433,8 +440,8 @@ public class InteractionManager : MonoBehaviour
         instance.gameController.GetComponent<Invector.vGameController>().enabled = false;
         instance.uiCamera.transform.gameObject.SetActive(true);
         instance.gameCamera.transform.gameObject.SetActive(false);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        ControlFreak2.CFCursor.visible = true;
+        ControlFreak2.CFCursor.lockState = CursorLockMode.None;
         // perform tally calculations
         instance.CalculateLevelPoints();
 
@@ -526,10 +533,16 @@ public class InteractionManager : MonoBehaviour
     }
     private void Update()
     {
+
+        if (Input.GetKey("escape"))
+        {
+            ReturnToLaunch();
+        }
+
         GemText.text = instance.levelGemCount.ToString() + " / " + gemList.Length;
         CoinText.text = instance.levelCoinCount.ToString() + " / " + coinList.Length;
 
-        if (Input.GetKey(KeyCode.P))
+        if (ControlFreak2.CF2Input.GetKey(KeyCode.P))
         {
             SetPoisoned(true);
         }

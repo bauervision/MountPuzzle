@@ -16,7 +16,7 @@ Assets/TextMesh Pro
 Assets/WeatherMaker
 Assets/Characters
 Assets/Lens Flares
-Assets/NatureManufacture Assets
+Assets/NatureManufacture*
 Assets/Forest*
 Assets/Enviro*
 Assets/Allsky/
@@ -34,7 +34,8 @@ Assets/Allegorithmic
 Assets/BauerVision*
 Assets/Materials/
 RWT_Cache/
-A
+CF2*
+Assets/Plugins/
 
 
 Lightmap*
